@@ -1,0 +1,139 @@
+<html>
+    <head>
+        <link rel="stylesheet" href="st.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="slick/slick-theme.css">
+<link rel="stylesheet" type="text/css" href="slick/slick.css">
+<script type="text/javascript" src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+<script type="text/javascript" src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+<script type="text/javascript" src="slick/slick.min.js"></script>
+    </head>
+    <body>
+        
+<div class="split-slideshow">
+  <div class="slideshow">
+    <div class="slider">
+      <div class="item">
+        <img src="https://raw.githubusercontent.com/supahfunk/supah-codepen/master/canyon-2.jpg" />
+      </div>
+      <div class="item">
+        <img src="https://raw.githubusercontent.com/supahfunk/supah-codepen/master/canyon-3.jpg" />
+      </div>
+      <div class="item">
+        <img src="https://raw.githubusercontent.com/supahfunk/supah-codepen/master/canyon-4.jpg" />
+      </div>
+      <div class="item">
+        <img src="https://raw.githubusercontent.com/supahfunk/supah-codepen/master/canyon-1.jpg" />
+      </div>
+    </div>
+  </div>
+  <div class="slideshow-text">
+    <div class="item">Canyon</div>
+    <div class="item">Desert</div>
+    <div class="item">Erosion</div>
+    <div class="item">Shape</div>
+  </div>
+  <div class="mouse"></div>
+</div>
+   
+    </body>
+<script>
+        var $slider = $('.slideshow .slider'),
+  maxitems = $('.item', $slider).length,
+  dragging = false,
+  tracking,
+  rightTracking;
+
+$sliderright = $('.slideshow').clone().addClass('slideshow-right').appendTo($('.split-slideshow'));
+
+rightitems = $('.item', $sliderright).toArray();
+reverseitems = rightitems.reverse();
+$('.slider', $sliderright).html('');
+for (i = 0; i < maxitems; i++) {
+  $(reverseitems[i]).appendTo($('.slider', $sliderright));
+}
+
+$slider.addClass('slideshow-left');
+$('.slideshow-left').slick({
+  vertical: true,
+  verticalSwiping: true,
+  arrows: false,
+  infinite: true,
+  dots: true,
+  speed: 1000,
+  cssEase: 'cubic-bezier(0.7, 0, 0.3, 1)'
+}).on('beforeChange', function(event, slick, currentSlide, nextSlide) {
+
+  if (currentSlide > nextSlide && nextSlide == 0 && currentSlide == maxitems - 1) {
+    $('.slideshow-right .slider').slick('slickGoTo', -1);
+    $('.slideshow-text').slick('slickGoTo', maxitems);
+  } 
+    else if (currentSlide < nextSlide && currentSlide == 0 && nextSlide == maxitems - 1) {
+    $('.slideshow-right .slider').slick('slickGoTo', maxitems);
+    $('.slideshow-text').slick('slickGoTo', -1);
+  } else {
+    $('.slideshow-right .slider').slick('slickGoTo', maxitems - 1 - nextSlide);
+    $('.slideshow-text').slick('slickGoTo', nextSlide);
+  }
+}).on("mousewheel", function(event) {
+  event.preventDefault();
+  if (event.deltaX > 0 || event.deltaY < 0) {
+    $(this).slick('slickNext');
+  } else if (event.deltaX < 0 || event.deltaY > 0) {
+    $(this).slick('slickPrev');
+  };
+//}).on("mousehover", function() {
+//  $('.slideshow-right .slider').slick({
+//    autoplay:false
+//  });
+//    $('.slideshow-left .slider').slick({
+//    autoplay:false
+//  });
+//    $('.slideshow-text ').slick({
+//    autoplay:false
+//  });
+  
+}).on('mousedown touchstart', function(){
+  dragging = true;
+  tracking = $('.slick-track', $slider).css('transform');
+  tracking = parseInt(tracking.split(',')[5]);
+  righttracking = $('.slideshow-right .slick-track').css('transform');
+  righttracking = parseInt(righttracking.split(',')[5]);
+}).on('mousemove touchmove', function(){
+  if (dragging) {
+    newtracking = $('.slideshow-left .slick-track').css('transform');
+    newtracking = parseInt(newtracking.split(',')[5]);
+    difftracking = newtracking - tracking;
+    $('.slideshow-right .slick-track').css({'transform': 'matrix(1, 0, 0, 1, 0, ' + (righttracking - difftracking) + ')'});
+  }
+}).on('mouseleave touchend mouseup', function(){
+  dragging = false;
+});
+
+$('.slideshow-right .slider').slick({
+  swipe: true,
+  vertical: true,
+  arrows: false,
+  infinite: true,
+  speed: 950,
+  cssEase: 'cubic-bezier(0.7, 0, 0.3, 1)',
+  initialSlide: maxitems - 1
+});
+$('.slideshow-text').slick({
+  swipe: true,
+  vertical: true,
+  arrows: false,
+  infinite: true,
+  speed: 950,
+  cssEase: 'cubic-bezier(0.7, 0, 0.3, 1)'
+});
+
+
+
+
+        
+        </script>
+-->
+    
+    
+</html>
